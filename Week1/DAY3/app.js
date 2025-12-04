@@ -3,5 +3,4 @@ Commit-2
 commit-3
 Commit-4
 function broken() { console.log('broken');
-function broken() { console.log('broken');
 line6
