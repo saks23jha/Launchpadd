@@ -1,0 +1,5 @@
+Git Stash Process:
+1. Used 'git stash' to temporarily save uncommitted changes.
+2. Switched to another branch.
+3. Applied stashed changes using 'git stash apply' after returning to original branch.
+4. Cleaned up stash with 'git stash drop'.

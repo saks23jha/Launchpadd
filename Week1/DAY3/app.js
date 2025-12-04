@@ -1,11 +1,4 @@
-Commit-1
-Commit-2
-commit-3
-Commit-4
-function broken() { console.log('broken');
-
-Commit-6
-Commit7
-Commit8
-Commit9
-Commit10
+commit1
+Commit2
+Commit3
+Commit4
