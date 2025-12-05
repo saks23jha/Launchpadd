@@ -1,0 +1,43 @@
+{
+	"info": {
+		"_postman_id": "c4f4c88a-7648-4f14-852f-700d4efbae3f",
+		"name": "GitHub API Forensics",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50601214",
+		"_collection_link": "https://sakshij-hestabit-5482790.postman.co/workspace/sakshi-'s-Workspace~7d51b37b-901c-4480-84ba-3ce75c56de47/collection/50601214-c4f4c88a-7648-4f14-852f-700d4efbae3f?action=share&source=collection_link&creator=50601214"
+	},
+	"item": [
+		{
+			"name": "Get GitHub user",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Get Repos page1",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Get Repo page2",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "Get Repo page3",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
