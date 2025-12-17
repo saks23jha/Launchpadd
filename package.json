@@ -1,0 +1,25 @@
+{
+  "name": "launchpad",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saks23jha/Launchpadd.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saks23jha/Launchpadd/issues"
+  },
+  "homepage": "https://github.com/saks23jha/Launchpadd#readme",
+  "devDependencies": {
+    "husky": "^9.1.7",
+    "prettier": "^3.7.4"
+  }
+}

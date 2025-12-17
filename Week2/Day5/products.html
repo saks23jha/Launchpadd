@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Products</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>🛍️ Products</h1>
+    <a href="index.html" class="back">← Back to Home</a>
+  </header>
+
+  <section class="controls">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search products..."
+    />
+
+    <select id="sortSelect">
+      <option value="">Sort by</option>
+      <option value="low">Price: Low → High</option>
+      <option value="high">Price: High → Low</option>
+    </select>
+  </section>
+
+  <main id="productContainer" class="products">
+    <!-- Products will load here -->
+  </main>
+
+  <script src="products.js"></script>
+</body>
+</html>
