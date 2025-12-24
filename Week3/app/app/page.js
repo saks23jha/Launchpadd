@@ -1,7 +1,16 @@
+
+import HeroSection from "./components/landing/HeroSection";
+
+import AboutSection from "./components/landing/AboutSection";
+
 export default function Page() {
   return (
-    <div className="text-gray-400">
-      {/* Day 1: Header + Sidebar only */}
+    <div className="space-y-20">
+      <HeroSection />
+      <AboutSection />
     </div>
   );
 }
+
+
+            

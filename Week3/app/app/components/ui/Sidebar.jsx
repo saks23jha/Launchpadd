@@ -30,8 +30,8 @@ export default function Sidebar() {
         <SidebarItem
           icon={<HomeIcon />}
           label="Dashboard"
-          route="/"
-          active={pathname === '/'}
+          route="/dashboard"
+          active={pathname === '/dashboard'}
         />
 
         <SidebarItem
@@ -61,11 +61,34 @@ export default function Sidebar() {
         ACCOUNT PAGES
       </p>
 
-      <nav className="space-y-1">
+      {/* <nav className="space-y-1">
         <SidebarItem icon={<UserIcon />} label="Profile" />
         <SidebarItem icon={<ArrowRightOnRectangleIcon />} label="Sign In" />
         <SidebarItem icon={<UserPlusIcon />} label="Sign Up" />
+      </nav> */}
+      <nav className="space-y-1">
+        <SidebarItem
+          icon={<UserIcon />}
+          label="Profile"
+          route="/profile"
+          active={pathname === '/profile'}
+        />
+
+        <SidebarItem
+          icon={<ArrowRightOnRectangleIcon />}
+          label="Sign In"
+          route="/signin"
+          active={pathname === '/signin'}
+        />
+
+        <SidebarItem
+          icon={<UserPlusIcon />}
+          label="Sign Up"
+          route="/signup"
+          active={pathname === '/signup'}
+        />
       </nav>
+
 
       {/* Help card */}
       <div className="mt-12 bg-gradient-to-br from-teal-400 to-teal-500 rounded-2xl p-5 text-white">
@@ -90,10 +113,9 @@ function SidebarItem({ icon, label, route, active }) {
     <div
       onClick={() => route && router.push(route)}
       className={`flex items-center gap-4 px-4 py-3 rounded-xl text-sm cursor-pointer transition
-        ${
-          active
-            ? 'bg-gray-100 text-gray-900 font-semibold shadow-sm'
-            : 'text-gray-500 hover:bg-gray-100 hover:text-gray-800'
+        ${active
+          ? 'bg-gray-100 text-gray-900 font-semibold shadow-sm'
+          : 'text-gray-500 hover:bg-gray-100 hover:text-gray-800'
         }`}
     >
       <div
