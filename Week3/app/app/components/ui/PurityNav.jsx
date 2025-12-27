@@ -18,8 +18,7 @@ export default function Navbar() {
         <div className="w-full flex justify-center pt-6">
             <div
                 className="w-[90%] max-w-6xl flex items-center justify-between px-6 py-3
-        rounded-xl shadow-sm border
-        bg-gradient-to-r from-white via-white-100"
+        bg-from-white via-white-100"
             >
                 {/* LEFT: Logo */}
                 <div className="flex items-center gap-2">
@@ -73,8 +72,8 @@ export default function Navbar() {
 
                 {/* RIGHT: Button */}
                 <button
-                    className="bg-gray-800 text-white text-xs font-semibold
-          px-4 py-2 rounded-full hover:bg-gray-700 transition"
+                    className="bg-gray-800 text-white text-white font-semibold
+          px-4 py-2 rounded-full hover:bg teel transition"
                 >
                     Free Download
                 </button>
