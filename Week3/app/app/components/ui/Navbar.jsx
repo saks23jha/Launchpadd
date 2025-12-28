@@ -21,7 +21,7 @@ export default function Navbar() {
       : slug.charAt(0).toUpperCase() + slug.slice(1);
 
   return (
-    <header className="flex items-center justify-between px-6 py-4 bg-white">
+    <header className="flex items-center justify-between px-6 py-4 bg-grey">
       {/* Left */}
       <div>
         <p className="text-xs text-gray-400">Pages / {pageName}</p>

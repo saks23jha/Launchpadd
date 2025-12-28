@@ -8,15 +8,15 @@ export default function SignUp() {
   return (
     <div className="min-h-screen flex flex-col bg-teel">
 
-      {/* ===== HERO / WELCOME SECTION (WITH NAVBAR EMBEDDED) ===== */}
+     
       <section className="relative h-[420px] bg-[#4FD1C5] text-white">
 
-        {/* NAVBAR INSIDE HERO */}
+        
         <div className="absolute top-0 left-0 w-full z-20" bg-teel-500>
           <PurityNav />
         </div>
 
-        {/* HERO CONTENT */}
+        
         <div className="h-full flex flex-col items-center justify-center text-center px-4">
           <h1 className="text-3xl font-bold mb-2">Welcome!</h1>
           <p className="text-sm max-w-md font-bold opacity-90">
@@ -25,8 +25,6 @@ export default function SignUp() {
         </div>
 
       </section>
-
-      {/* ===== REGISTER CARD (OVERLAPPED) ===== */}
       <section className="relative flex justify-center">
         <div
           className="
@@ -43,7 +41,7 @@ export default function SignUp() {
               Register with
             </h2>
 
-            {/* SOCIAL ICONS */}
+         
             <div className="flex justify-center gap-4 mb-4">
               {['/Facebook.svg', '/Apple.svg', '/Google.svg'].map((icon, i) => (
                 <div
@@ -57,7 +55,7 @@ export default function SignUp() {
 
             <p className="text-center text-xs text-gray-400 mb-4">or</p>
 
-            {/* FORM */}
+           
             <div className="space-y-4">
               <div>
                 <label className="text-xs text-gray-600 font-medium">
@@ -112,7 +110,7 @@ export default function SignUp() {
         </div>
       </section>
 
-      {/* SPACER */}
+     
       <div className="h-[420px]" />
 
       <Footer />

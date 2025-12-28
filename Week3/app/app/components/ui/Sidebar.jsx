@@ -16,7 +16,7 @@ export default function Sidebar() {
   const pathname = usePathname(); // ✅ detect current route
 
   return (
-    <aside className="w-72 bg-white min-h-screen px-6 py-8 shadow-md">
+    <aside className="w-72 bg-grey min-h-screen px-6 py-8 shadow-md">
       {/* Logo */}
       <div className="flex items-center gap-3 mb-12">
         <img src="/logo.png" alt="Purity UI Dashboard Logo" className="w-9 h-9" />
@@ -115,7 +115,7 @@ function SidebarItem({ icon, label, route, active }) {
       className={`flex items-center gap-4 px-4 py-3 rounded-xl text-sm cursor-pointer transition
         ${active
           ? 'bg-gray-100 text-gray-900 font-semibold shadow-sm'
-          : 'text-gray-500 hover:bg-gray-100 hover:text-gray-800'
+          : 'text-gray-500 hover:bg-gray-100 hover:text-white-800'
         }`}
     >
       <div
