@@ -12,7 +12,7 @@ export default function SignUp() {
       <section className="relative h-[420px] bg-[#4FD1C5] text-white">
 
         
-        <div className="absolute top-0 left-0 w-full z-20" bg-teel-500>
+        <div className="absolute top-0 left-0 w-full z-20" >
           <PurityNav />
         </div>
 
