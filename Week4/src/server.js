@@ -1,16 +1,18 @@
-const { port } = require('./config');
-const createApp = require('./loaders/app');
-const connectDB = require('./loaders/db');
+import createApp from "./loaders/app.js";
+import dbLoader from "./loaders/db.js";
+import { port } from "./config/index.js";
 
 const startServer = async () => {
-  await connectDB(); // FIRST connect DB
+  try {
+    await dbLoader();
+    const app = await createApp();
 
-  const app = await createApp();
-
-  app.listen(port, () => {
-    // console.log('Database connected');
-    console.log(`Server running on port ${port}`);
-  });
+    app.listen(port, () => {
+      console.log(`Server running on port ${port}`);
+    });
+  } catch (err) {
+    console.error("Error starting server:", err);
+  }
 };
 
 startServer();

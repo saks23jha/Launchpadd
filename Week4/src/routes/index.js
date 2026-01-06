@@ -1,10 +1,23 @@
-const express = require('express');
+import express from "express";
+import {
+  getProducts,
+  createProduct,
+  deleteProduct,
+} from "../controllers/product.controller.js";
+
 const router = express.Router();
 
-router.get('/health', (req, res) => {
-  res.json({ status: 'OK' });
+router.get("/health", (req, res) => {
+  res.json({ status: "OK" });
 });
 
-router.routeCount = 1;
+router
+  .route("/products")
+  .get(getProducts)
+  .post(createProduct);
 
-module.exports = router;
+router.delete("/products/:id", deleteProduct);
+
+router.routeCount = 4;
+
+export default router;

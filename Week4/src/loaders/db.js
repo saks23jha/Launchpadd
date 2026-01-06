@@ -1,7 +1,14 @@
-const logger = require('../utils/logger');
+import mongoose from "mongoose";
+import logger from "../utils/logger.js";
 
 const dbLoader = async () => {
-  logger.info('Database connected');
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    logger.info("Database connected");
+  } catch (error) {
+    logger.error("Database connection failed", error);
+    process.exit(1);
+  }
 };
 
-module.exports = dbLoader;
+export default dbLoader;
