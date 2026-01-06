@@ -1,4 +1,5 @@
 import express from "express";
+import userRoutes from "./user.route.js";
 import {
   getProducts,
   createProduct,
@@ -11,6 +12,10 @@ router.get("/health", (req, res) => {
   res.json({ status: "OK" });
 });
 
+// Mount user routes under /users
+router.use("/users", userRoutes);
+
+// Product routes
 router
   .route("/products")
   .get(getProducts)
@@ -18,6 +23,6 @@ router
 
 router.delete("/products/:id", deleteProduct);
 
-router.routeCount = 4;
+router.routeCount = 5; // increased by 1
 
 export default router;
