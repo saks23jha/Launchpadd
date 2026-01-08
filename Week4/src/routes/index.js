@@ -1,28 +1,26 @@
 import express from "express";
 import userRoutes from "./user.route.js";
-import {
-  getProducts,
-  createProduct,
-  deleteProduct,
-} from "../controllers/product.controller.js";
+import productRoutes from "./product.route.js";
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * /health:
+ *   get:
+ *     summary: Health check
+ *     tags:
+ *       - Health
+ *     responses:
+ *       200:
+ *         description: Server is healthy
+ */
 router.get("/health", (req, res) => {
   res.json({ status: "OK" });
 });
 
-// Mount user routes under /users
+// Mount route modules
 router.use("/users", userRoutes);
-
-// Product routes
-router
-  .route("/products")
-  .get(getProducts)
-  .post(createProduct);
-
-router.delete("/products/:id", deleteProduct);
-
-router.routeCount = 5; // increased by 1
+router.use("/products", productRoutes);
 
 export default router;

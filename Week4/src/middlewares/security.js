@@ -1,12 +1,15 @@
 import helmet from "helmet";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
-import express from "express"; // Needed for express.json()
+import express from "express";
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 3,
-  message: "Too many requests, please try again later"
+  message: "Too many requests, please try again later",
+  skip: (req) => {
+    return req.path.startsWith("/docs");
+  },
 });
 
 const securityMiddleware = (app) => {
@@ -14,13 +17,15 @@ const securityMiddleware = (app) => {
   app.use(helmet());
 
   // CORS
-  app.use(cors({
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true
-  }));
+  app.use(
+    cors({
+      origin: "http://localhost:3000",
+      methods: ["GET", "POST", "PUT", "DELETE"],
+      credentials: true,
+    })
+  );
 
-  // Rate limiting
+  // Rate limiting (Swagger excluded)
   app.use(limiter);
 
   // Payload limit (10KB)
