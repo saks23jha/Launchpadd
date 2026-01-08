@@ -16,7 +16,7 @@ const swaggerSpec = swaggerJsdoc({
     ],
   },
 
-  // 👇 FIXED PATH (because app runs from /src)
+  // 👇 FIXED PATH 
   apis: [path.join(process.cwd(), "routes/**/*.js")],
 });
 

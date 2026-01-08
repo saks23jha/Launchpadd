@@ -4,7 +4,7 @@ import rateLimit from "express-rate-limit";
 import express from "express";
 
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
+  windowMs: 15 * 60 * 1000, 
   max: 3,
   message: "Too many requests, please try again later",
   skip: (req) => {

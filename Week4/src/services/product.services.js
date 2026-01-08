@@ -16,14 +16,14 @@ export const getProducts = async (query) => {
 
   const mongoQuery = {};
 
-  /* ------------------ Soft delete ------------------ */
+  // Soft delete  //
   if (includeDeleted !== "true") {
      mongoQuery.deletedAt = null;
 
 
   }
 
-  /* ------------------ Search ------------------ */
+  //  Search
   if (search) {
     const fields = searchBy.split(",");
 
@@ -34,7 +34,7 @@ export const getProducts = async (query) => {
     mongoQuery[condition === "and" ? "$and" : "$or"] = searchConditions;
   }
 
-  /* ------------------ Price Filter ------------------ */
+  //  Price Filter
   if (minPrice || maxPrice) {
     mongoQuery.price = {};
 
@@ -47,15 +47,15 @@ export const getProducts = async (query) => {
     }
   }
 
-  /* ------------------ Other Filters ------------------ */
+  //  Other Filters
   Object.keys(filters).forEach((key) => {
     mongoQuery[key] = filters[key];
   });
 
-  /* ------------------ Pagination ------------------ */
+  //  Pagination
   const skip = (Number(page) - 1) * Number(limit);
 
-  /* ------------------ Sorting ------------------ */
+  //  Sorting
   const sortOrder = order === "asc" ? 1 : -1;
 
   const [data, total] = await Promise.all([

@@ -1,9 +1,4 @@
 import { z } from "zod";
-
-/* =======================
-   Schemas
-======================= */
-
 export const userSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
   email: z.string().email("Invalid email address"),
@@ -18,10 +13,6 @@ export const productSchema = z.object({
   stock: z.number().int().nonnegative(),
 });
 
-/* =======================
-   Generic validator
-======================= */
-
 const validate = (schema) => (req, res, next) => {
   try {
     req.body = schema.parse(req.body);
@@ -34,9 +25,6 @@ const validate = (schema) => (req, res, next) => {
   }
 };
 
-/* =======================
-   Schema-specific middlewares
-======================= */
 
 export const validateUser = validate(userSchema);
 export const validateProduct = validate(productSchema);

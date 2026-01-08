@@ -19,13 +19,13 @@ const createApp = async () => {
   // Security middlewares (helmet, cors, rate limit)
   securityMiddleware(app);
 
-  // ✅ Swagger MUST be before routes & error handler
+  
   app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
   // Routes
   app.use("/api", routes);
 
-  // Global error handler (LAST)
+  // Global error handler (shuld always be after the routes )
   app.use(errorMiddleware);
 
   logger.info("Application initialized");
