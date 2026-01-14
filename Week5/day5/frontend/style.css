@@ -1,0 +1,9 @@
+li.available {
+  color: green;
+  font-weight: bold;
+}
+
+li.unavailable {
+  color: red;
+  font-weight: bold;
+}
