@@ -1,0 +1,13 @@
+# Logs
+logs/
+*app.log
+
+# Environment files
+.env
+# Node
+node_modules/
+# Certificates / Keys
+
+certs/
+*.pem
+
