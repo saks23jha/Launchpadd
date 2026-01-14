@@ -10,7 +10,7 @@ await client.connect();
 const db = client.db("availability_db");
 const users = db.collection("users");
 
-// Seed users with availability
+// users with availability
 await users.deleteMany({});
 await users.insertMany([
   { name: "Alice", available: true },
