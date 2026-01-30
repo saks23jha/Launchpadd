@@ -38,8 +38,6 @@ rf = RandomForestClassifier(
 
 rf.fit(X_train, y_train)
 
-
-# ---------------- FEATURE IMPORTANCE ----------------
 importances = rf.feature_importances_
 
 importance_df = sorted(
@@ -48,18 +46,15 @@ importance_df = sorted(
     reverse=True
 )
 
-
-# ---------------- SELECT TOP FEATURES ----------------
 TOP_K = 20
 selected_features = [f[0] for f in importance_df[:TOP_K]]
 
 
-# ---------------- SAVE FEATURE LIST ----------------
+
 with open(FEATURE_DIR / "feature_list.json", "w") as f:
     json.dump(selected_features, f, indent=4)
 
 
-# ---------------- PLOT IMPORTANCE ----------------
 names = [f[0] for f in importance_df[:TOP_K]]
 scores = [f[1] for f in importance_df[:TOP_K]]
 

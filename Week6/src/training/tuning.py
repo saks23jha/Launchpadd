@@ -17,7 +17,6 @@ TUNING_DIR.mkdir(exist_ok=True)
 X_train = np.load(FEATURE_DIR / "X_train.npy")
 y_train = np.load(FEATURE_DIR / "y_train.npy")
 
-# ---------------- OPTUNA OBJECTIVE ----------------
 def objective(trial):
     params = {
         "n_estimators": trial.suggest_int("n_estimators", 300, 800),

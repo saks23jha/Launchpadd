@@ -16,7 +16,7 @@ EVAL_DIR.mkdir(exist_ok=True)
 X_train = np.load(FEATURE_DIR / "X_train.npy")
 model = joblib.load(MODEL_DIR / "best_model.pkl")
 
-# ---------------- SHAP EXPLAINER ----------------
+
 explainer = shap.TreeExplainer(model)
 shap_values = explainer.shap_values(X_train)
 

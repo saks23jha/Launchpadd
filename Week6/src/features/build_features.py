@@ -34,7 +34,7 @@ X["LargeFamily"] = (X["FamilySize"] >= 5).astype(int)
 X["PclassFare"] = X["Pclass"] * X["Fare"]
 
 
-# Feature groups
+
 num_cols = [
     "Age", "Fare", "SibSp", "Parch", "FamilySize",
     "FarePerPerson", "FareLog", "AgeFilled",
@@ -45,8 +45,6 @@ cat_cols = ["Sex", "Embarked", "Pclass", "AgeBucket"]
 
 X = X[num_cols + cat_cols]
 
-
-# -------- PIPELINES --------
 num_pipeline = Pipeline([
     ("imputer", SimpleImputer(strategy="median")),
     ("scaler", StandardScaler())
@@ -63,10 +61,10 @@ preprocessor = ColumnTransformer([
 ])
 
 
-# Transform
+
 X_processed = preprocessor.fit_transform(X)
 
-# Train–test split
+
 X_train, X_test, y_train, y_test = train_test_split(
     X_processed,
     y,
@@ -75,8 +73,6 @@ X_train, X_test, y_train, y_test = train_test_split(
     stratify=y
 )
 
-
-# # Save outputs
 joblib.dump(preprocessor, "features/preprocessing_pipeline.pkl")
 
 np.save("features/X_train.npy", X_train)
