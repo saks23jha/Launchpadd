@@ -1,0 +1,22 @@
+[
+    "x0_male",
+    "x0_female",
+    "FarePerPerson",
+    "AgeFilled",
+    "Age",
+    "FareLog",
+    "Fare",
+    "PclassFare",
+    "x2_3",
+    "FamilySize",
+    "SibSp",
+    "Parch",
+    "x2_1",
+    "x1_S",
+    "HighFare",
+    "LargeFamily",
+    "x2_2",
+    "x3_Adult",
+    "x3_Child",
+    "x1_C"
+]

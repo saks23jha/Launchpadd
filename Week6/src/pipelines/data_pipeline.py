@@ -19,6 +19,12 @@ def clean_data(df):
  
     # 2. Remove duplicates
     df.drop_duplicates(inplace=True)
+
+    # Drop Cabin column (too many missing values)
+    if "Cabin" in df.columns:
+        df.drop(columns=["Cabin"], inplace=True)
+
+
  
     # 3. Handle outliers using IQR on Fare
     Q1 = df["Fare"].quantile(0.25)
