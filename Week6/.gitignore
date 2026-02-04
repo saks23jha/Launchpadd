@@ -1,0 +1,82 @@
+# -----------------------
+# Python
+# -----------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environment
+venv/
+.env/
+.env.*
+
+# -----------------------
+# Jupyter / Notebooks
+# -----------------------
+.ipynb_checkpoints/
+
+# -----------------------
+# OS / Editor
+# -----------------------
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# -----------------------
+# Logs
+# -----------------------
+logs/
+*.log
+
+# -----------------------
+# Model artifacts
+# -----------------------
+models/*.pkl
+models/*.joblib
+
+# -----------------------
+# Generated data
+# -----------------------
+data/processed/
+data/external/
+
+# -----------------------
+# Feature artifacts
+# -----------------------
+features/*.npy
+features/*.pkl
+features/*.json
+
+# -----------------------
+# Evaluation outputs
+# -----------------------
+evaluation/*.png
+evaluation/*.json
+
+# -----------------------
+# Tuning outputs
+# -----------------------
+tuning/*.json
+tuning/*.log
+
+# -----------------------
+# Monitoring outputs
+# -----------------------
+monitoring/*.log
+
+# -----------------------
+# Docker
+# -----------------------
+*.tar
+*.pid
+
+# -----------------------
+# Secrets / credentials
+# -----------------------
+*.key
+*.pem
+*.secret
+
