@@ -1,7 +1,7 @@
 # Linux Inside Docker Container
  
 ## Objective
-To understand how Linux OS operations work inside a running Docker container and how containers behave differently from virtual machines.
+To understand how Linux OS operations work inside a running Docker container.
  
 ---
  
@@ -9,10 +9,6 @@ To understand how Linux OS operations work inside a running Docker container and
 The running container was accessed using:
  
 docker exec -it day1-container /bin/sh
- 
-This provides shell access similar to SSH into a server.
- 
----
  
 ## File System Exploration
 Commands used:
@@ -44,8 +40,8 @@ Command used:
 - top
  
 Observations:
-- CPU and memory usage are minimal
-- Resources are isolated using Linux cgroups
+-CPU and memory usage are minimal
+-this command is shows real time system and process information
  
 ---
  
@@ -63,13 +59,10 @@ Observations:
 ## Logs
 Logs were viewed using:
  
-docker logs week5-node-container
- 
+docker logs day1-container
+
 Observations:
 - Docker captures logs from the main process (PID 1)
-- No log files are maintained inside the container
- 
----
  
 ## Conclusion
 Docker containers provide isolated, lightweight Linux environments that share the host kernel. They are efficient, fast to start, and suitable for running production server-side applications.

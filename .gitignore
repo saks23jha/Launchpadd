@@ -10,4 +10,12 @@ node_modules/
 
 certs/
 *.pem
+# Ignore Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore __init__.py (optional)
+__init__.py
 
