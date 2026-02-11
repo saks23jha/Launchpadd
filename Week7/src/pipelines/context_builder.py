@@ -1,7 +1,7 @@
 import json
-from src.retriever.hybrid_retriever import hybrid_retrieve
-from src.retriever.reranker import rerank
-from src.retriever.mmr import mmr
+from retriever.hybrid_retriever import hybrid_retrieve
+from retriever.reranker import rerank
+from retriever.mmr import mmr
 
 CHUNKS_FILE = "src/data/chunks/document_chunks.jsonl"
 

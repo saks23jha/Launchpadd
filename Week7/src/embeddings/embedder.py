@@ -32,7 +32,7 @@ def run_embedding():
     # Generated local embeddings
     embeddings = model.encode(
         texts,
-        normalize_embeddings=True,   # IMPORTANT for BGE
+        normalize_embeddings=True,   # Important for BGE as bge ecepts cosine similarity directly
         show_progress_bar=True
     )
 

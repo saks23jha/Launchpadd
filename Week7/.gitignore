@@ -3,7 +3,11 @@
 venv/
 __pycache__/
 *.pyc
-
+__init__.py
+#logs
+logs/
 # Data / artifacts
 *.pkl
 
+#.env
+.env
