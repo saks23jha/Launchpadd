@@ -1,3 +1,4 @@
+
 import express from "express";
 import routes from "../routes/index.js";
 import securityMiddleware from "../middlewares/security.js";
@@ -13,8 +14,8 @@ const createApp = async () => {
   logger.info("Initializing middlewares");
 
   // Core middlewares
-  app.use(express.json({ limit: "10kb" }));
-  app.use(tracingMiddleware);
+  app.use(tracingMiddleware);  // 👈 move to absolute top
+app.use(express.json({ limit: "10kb" }));
 
   // Security middlewares (helmet, cors, rate limit)
   securityMiddleware(app);
@@ -25,10 +26,12 @@ const createApp = async () => {
   // Routes
   app.use("/api", routes);
 
-  // Global error handler (shuld always be after the routes )
+  // Global error handler (should always be after the routes )
   app.use(errorMiddleware);
 
   logger.info("Application initialized");
+  logger.info("Routes mounted: 23 endpoints");
+
 
   return app;
 };
