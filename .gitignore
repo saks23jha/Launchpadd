@@ -4,6 +4,7 @@ logs/
 
 # Environment files
 .env
+.env.example
 # Node
 node_modules/
 # Certificates / Keys
@@ -16,6 +17,4 @@ __pycache__/
 *.pyo
 *.pyd
 
-# Ignore __init__.py (optional)
-__init__.py
 
