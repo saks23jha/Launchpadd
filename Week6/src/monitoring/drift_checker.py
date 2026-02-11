@@ -2,7 +2,6 @@ from pathlib import Path
 import re
 import numpy as np
 
-# ---------------- PATHS ----------------
 BASE_DIR = Path(__file__).resolve().parents[1]
 LOG_FILE = BASE_DIR / "logs" / "predictions.log"
 
@@ -19,7 +18,7 @@ with open(LOG_FILE, "r") as f:
             predictions.append(int(match.group(1)))
             probabilities.append(float(match.group(2)))
 
-# ---------------- MONITORING ----------------
+# drif analysis
 predictions = np.array(predictions)
 probabilities = np.array(probabilities)
 

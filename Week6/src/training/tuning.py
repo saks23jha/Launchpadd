@@ -6,14 +6,14 @@ from pathlib import Path
 from xgboost import XGBClassifier
 from sklearn.model_selection import StratifiedKFold, cross_val_score
 
-# ---------------- PATHS ----------------
+
 BASE_DIR = Path(__file__).resolve().parents[1]
 FEATURE_DIR = BASE_DIR / "features"
 TUNING_DIR = BASE_DIR / "tuning"
 
 TUNING_DIR.mkdir(exist_ok=True)
 
-# ---------------- LOAD DATA ----------------
+
 X_train = np.load(FEATURE_DIR / "X_train.npy")
 y_train = np.load(FEATURE_DIR / "y_train.npy")
 
@@ -46,11 +46,10 @@ def objective(trial):
 
     return roc_auc
 
-# ---------------- RUN STUDY ----------------
 study = optuna.create_study(direction="maximize")
 study.optimize(objective, n_trials=50)
 
-# ---------------- SAVE RESULTS ----------------
+
 results = {
     "best_cv_roc_auc": study.best_value,
     "best_params": study.best_params

@@ -20,13 +20,13 @@ y_test = np.load(FEATURE_DIR / "y_test.npy")
 
 model = joblib.load(MODEL_DIR / "best_model.pkl")
 
-# ---------------- PREDICTIONS ----------------
+# predictions
 y_pred = model.predict(X_test)
 
-# ---------------- CONFUSION MATRIX ----------------
+# confusion matrix
 cm = confusion_matrix(y_test, y_pred)
 
-# ---------------- HEATMAP ----------------
+# heatmap
 plt.figure(figsize=(6, 5))
 sns.heatmap(
     cm,

@@ -7,19 +7,17 @@ from pathlib import Path
 from sklearn.ensemble import RandomForestClassifier
 
 
-# ---------------- PATHS ----------------
 BASE_DIR = Path(__file__).resolve().parents[1]
 FEATURE_DIR = BASE_DIR / "features"
 
 
-# ---------------- LOAD DATA ----------------
 X_train = np.load(FEATURE_DIR / "X_train.npy", allow_pickle=True)
 y_train = np.load(FEATURE_DIR / "y_train.npy", allow_pickle=True)
 
 preprocessor = joblib.load(FEATURE_DIR / "preprocessing_pipeline.pkl")
 
 
-# ---------------- GET FEATURE NAMES ----------------
+# extract feature names from preprocessor
 num_features = preprocessor.named_transformers_["num"].get_feature_names_out()
 cat_features = (
     preprocessor.named_transformers_["cat"]
@@ -30,7 +28,7 @@ cat_features = (
 feature_names = list(num_features) + list(cat_features)
 
 
-# ---------------- TRAIN MODEL ----------------
+# traing model for feature importance
 rf = RandomForestClassifier(
     n_estimators=100,
     random_state=42

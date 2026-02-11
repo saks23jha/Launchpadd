@@ -1,6 +1,8 @@
+#
 import pandas as pd
 import numpy as np
 import joblib
+from pathlib import Path
 
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
@@ -9,8 +11,16 @@ from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 
 
-# Load data
-df = pd.read_csv("data/raw/titanic.csv")
+
+BASE_DIR = Path(__file__).resolve().parents[1]   
+DATA_PATH = BASE_DIR / "data" / "raw" / "titanic.csv"
+FEATURE_DIR = BASE_DIR / "features"
+FEATURE_DIR.mkdir(exist_ok=True)
+
+
+
+print(f"Loading data from: {DATA_PATH}")
+df = pd.read_csv(DATA_PATH)
 
 # Target
 y = df["Survived"]
@@ -73,11 +83,11 @@ X_train, X_test, y_train, y_test = train_test_split(
     stratify=y
 )
 
-joblib.dump(preprocessor, "features/preprocessing_pipeline.pkl")
+joblib.dump(preprocessor, FEATURE_DIR / "preprocessing_pipeline.pkl")
 
-np.save("features/X_train.npy", X_train)
-np.save("features/X_test.npy", X_test)
-np.save("features/y_train.npy", y_train)
-np.save("features/y_test.npy", y_test)
+np.save(FEATURE_DIR / "X_train.npy", X_train)
+np.save(FEATURE_DIR / "X_test.npy", X_test)
+np.save(FEATURE_DIR / "y_train.npy", y_train)
+np.save(FEATURE_DIR / "y_test.npy", y_test)
 
 print("build_features.py completed")

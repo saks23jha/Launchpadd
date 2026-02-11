@@ -8,6 +8,7 @@ import logging
 from datetime import datetime
 import uuid
 
+# PATHS 
 BASE_DIR = Path(__file__).resolve().parents[1]
 
 MODEL_PATH = BASE_DIR / "models" / "best_model.pkl"
@@ -17,21 +18,26 @@ LOG_DIR = BASE_DIR / "logs"
 LOG_DIR.mkdir(exist_ok=True)
 LOG_FILE = LOG_DIR / "predictions.log"
 
-# ---------------- LOGGING ----------------
-logging.basicConfig(
-    filename=LOG_FILE,
-    level=logging.INFO,
-    format="%(asctime)s | %(message)s"
-)
+# ---------------- LOGGER SETUP ----------------
+logger = logging.getLogger("prediction_logger")
+logger.setLevel(logging.INFO)
 
-# ---------------- LOAD ARTIFACTS ----------------
+LOG_FILE.touch(exist_ok=True)
+
+file_handler = logging.FileHandler(LOG_FILE, mode="a")
+formatter = logging.Formatter("%(asctime)s | %(message)s")
+file_handler.setFormatter(formatter)
+
+logger.handlers.clear()
+logger.addHandler(file_handler)
+
+logger.propagate = False
+
 model = joblib.load(MODEL_PATH)
 preprocessor = joblib.load(PREPROCESSOR_PATH)
 
-# ---------------- APP ----------------
 app = FastAPI(title="Titanic Survival Prediction API")
 
-# ---------------- INPUT SCHEMA (RAW FEATURES) ----------------
 class PredictionInput(BaseModel):
     Age: float
     Fare: float
@@ -41,12 +47,11 @@ class PredictionInput(BaseModel):
     Parch: int
     Embarked: str
 
-# ---------------- HEALTH CHECK ----------------
+
 @app.get("/health")
 def health_check():
     return {"status": "ok", "model_loaded": True}
 
-# ---------------- PREDICTION ----------------
 @app.post("/predict")
 def predict(data: PredictionInput):
     request_id = str(uuid.uuid4())
@@ -72,22 +77,22 @@ def predict(data: PredictionInput):
     df["LargeFamily"] = (df["FamilySize"] >= 5).astype(int)
     df["PclassFare"] = df["Pclass"] * df["Fare"]
 
-    # -------- PREPROCESS --------
+
     features = preprocessor.transform(df)
 
-    # -------- PREDICT --------
     prediction = int(model.predict(features)[0])
     probability = float(model.predict_proba(features)[0][1])
 
     # -------- LOG --------
-    logging.info(
-        f"timestamp={datetime.utcnow()} | "
+    logger.info(
         f"request_id={request_id} | "
         f"model_version=best_model.pkl | "
         f"input={data.dict()} | "
         f"probability={round(probability,4)} | "
         f"prediction={prediction}"
     )
+    for handler in logger.handlers:
+        handler.flush()
 
     return {
         "request_id": request_id,

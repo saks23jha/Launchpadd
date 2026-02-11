@@ -19,7 +19,6 @@ from sklearn.metrics import (
     confusion_matrix
 )
 
-# ---------------- PATHS ----------------
 BASE_DIR = Path(__file__).resolve().parents[1]
 FEATURE_DIR = BASE_DIR / "features"
 MODEL_DIR = BASE_DIR / "models"
@@ -28,7 +27,6 @@ EVAL_DIR = BASE_DIR / "evaluation"
 MODEL_DIR.mkdir(exist_ok=True)
 EVAL_DIR.mkdir(exist_ok=True)
 
-# ---------------- LOAD DATA ----------------
 X_train = np.load(FEATURE_DIR / "X_train.npy")
 X_test = np.load(FEATURE_DIR / "X_test.npy")
 y_train = np.load(FEATURE_DIR / "y_train.npy")
@@ -81,7 +79,7 @@ for name, model in models.items():
         scoring="roc_auc"
     ).mean()
 
-    # ---- Train on full training set ----
+
     model.fit(X_train, y_train)
 
     # ---- Test predictions ----
@@ -116,14 +114,14 @@ for name, model in models.items():
         best_model = model
         best_model_name = name
 
-# ---------------- SAVE BEST MODEL ----------------
+#  SAVE BEST MODEL 
 joblib.dump(best_model, MODEL_DIR / "best_model.pkl")
 
-# ---------------- SAVE METRICS ----------------
+#  SAVE METRICS
 with open(EVAL_DIR / "metrics.json", "w") as f:
     json.dump(metrics, f, indent=4)
 
-# ---------------- CONFUSION MATRIX ----------------
+# CONFUSION MATRIX 
 cm = confusion_matrix(y_test, best_model.predict(X_test))
 
 plt.figure(figsize=(5, 4))
