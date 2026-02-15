@@ -18,7 +18,7 @@ class OrderRepository {
   }
  
   static async findDelivered() {
-    return Order.find({ deliveredAt: { $exists: true } });
+    return Order.find({ deliveredAt: { $ne: null} });
   }
 }
  

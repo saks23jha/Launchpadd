@@ -17,12 +17,12 @@ class AccountRepository {
     }
  
     if (cursor) {
-      query._id = { $lt: cursor };
+      query.createdAt = { $lt: cursor };
     }
  
     return Account.find(query)
-      .sort({ _id: -1 })
-      .limit(limit);
+    .sort({ createdAt: -1 })
+    .limit(limit);
   }
  
   static async update(id, data) {

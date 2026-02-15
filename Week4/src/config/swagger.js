@@ -11,12 +11,12 @@ const swaggerSpec = swaggerJsdoc({
     },
     servers: [
       {
-        url: "http://localhost:3000/api",
+        url: "/api",
       },
     ],
   },
 
-  // 👇 FIXED PATH 
+  //  FIXED PATH 
   apis: [path.join(process.cwd(), "routes/**/*.js")],
 });
 

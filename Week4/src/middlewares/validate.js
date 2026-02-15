@@ -7,11 +7,11 @@ export const userSchema = z.object({
 });
 
 export const productSchema = z.object({
-  title: z.string().min(3, "Title must be at least 3 characters"),
-  price: z.number().positive("Price must be greater than 0"),
+  name: z.string().min(3, "Name must be at least 3 characters"),
+  price: z.number().positive(),
   category: z.string(),
-  stock: z.number().int().nonnegative(),
 });
+
 
 const validate = (schema) => (req, res, next) => {
   try {

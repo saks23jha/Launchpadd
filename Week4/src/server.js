@@ -1,5 +1,3 @@
-
-
 import createApp from "./loaders/app.js";
 import dbLoader from "./loaders/db.js";
 import { port } from "./config/index.js";
@@ -18,3 +16,4 @@ const startServer = async () => {
 };
 
 startServer();
+ 

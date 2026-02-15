@@ -76,3 +76,27 @@ export const getProducts = async (query) => {
     },
   };
 };
+
+  // CREATE PRODUCT
+ 
+export const createProduct = async (data) => {
+  return Product.create(data);
+};
+
+
+  // SOFT DELETE PRODUCT
+
+export const softDeleteProduct = async (id) => {
+  const product = await Product.findById(id);
+
+  if (!product) {
+    const error = new Error("Product not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
+  product.deletedAt = new Date();
+  await product.save();
+
+  return product;
+};

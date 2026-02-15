@@ -14,7 +14,7 @@ const createApp = async () => {
   logger.info("Initializing middlewares");
 
   // Core middlewares
-  app.use(tracingMiddleware);  // 👈 move to absolute top
+  app.use(tracingMiddleware);  
 app.use(express.json({ limit: "10kb" }));
 
   // Security middlewares (helmet, cors, rate limit)

@@ -48,6 +48,8 @@ accountSchema.pre("save", function (next) {
 });
 
 accountSchema.index({ email: 1, status: 1 });
+accountSchema.index({ status: 1, createdAt: -1 });
+
 
 const Account = model("Account", accountSchema);
 export default Account;
