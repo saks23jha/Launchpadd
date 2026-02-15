@@ -92,7 +92,7 @@ export const softDeleteProduct = async (id) => {
   if (!product) {
     const error = new Error("Product not found");
     error.statusCode = 404;
-    throw error;
+    throwerror;
   }
 
   product.deletedAt = new Date();

@@ -25,9 +25,15 @@ app.use(express.json({ limit: "10kb" }));
 
   // Routes
   app.use("/api", routes);
+  app.use((req, res, next) => {
+    const error = new Error(`Route not found: ${req.originalUrl}`);
+    error.statusCode = 404;
+    next(error);
+  });
 
   // Global error handler (should always be after the routes )
   app.use(errorMiddleware);
+
 
   logger.info("Application initialized");
   logger.info("Routes mounted: 23 endpoints");
