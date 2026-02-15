@@ -5,6 +5,6 @@ const INSTANCE = process.env.INSTANCE_NAME;
 
 http.createServer((req, res) => {
   res.end(`Response from ${INSTANCE}`);
-}).listen(PORT, () => {
+}).listen(PORT, "0.0.0.0", () => {
   console.log(`Backend ${INSTANCE} running on port ${PORT}`);
 });
