@@ -31,9 +31,9 @@ app.use(express.json({ limit: "10kb" }));
     next(error);
   });
 
+
   // Global error handler (should always be after the routes )
   app.use(errorMiddleware);
-
 
   logger.info("Application initialized");
   logger.info("Routes mounted: 23 endpoints");
