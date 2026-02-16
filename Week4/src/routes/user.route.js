@@ -8,6 +8,46 @@ import {
 import { validateUser } from "../middlewares/validate.js";
 
 const router = express.Router();
+/**
+ * @openapi
+ * /users:
+ *   post:
+ *     summary: Create a new user
+ *     description: Registers a new user and triggers a welcome email job
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - email
+ *               - password
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Sakshi
+ *               email:
+ *                 type: string
+ *                 example: sakshi@example.com
+ *               password:
+ *                 type: string
+ *                 example: password123
+ *               age:
+ *                 type: number
+ *                 example: 25
+ *     responses:
+ *       201:
+ *         description: User created successfully
+ *       400:
+ *         description: Validation error
+ *       500:
+ *         description: Internal server error
+ */
+
 router.post("/", validateUser, async (req, res, next) => {
   try {
     // delegate to controller
