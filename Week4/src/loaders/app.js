@@ -8,6 +8,8 @@ import logger from "../utils/logger.js";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "../config/swagger.js";
 
+
+
 const createApp = async () => {
   const app = express();
 
@@ -22,14 +24,16 @@ app.use(express.json({ limit: "10kb" }));
 
   
   app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
+  
   // Routes
+  
   app.use("/api", routes);
   app.use((req, res, next) => {
     const error = new Error(`Route not found: ${req.originalUrl}`);
     error.statusCode = 404;
     next(error);
   });
+
 
 
   // Global error handler (should always be after the routes )
