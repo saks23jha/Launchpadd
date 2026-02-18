@@ -20,3 +20,10 @@ __pycache__/
 
 Week4/src/node_modules/
 
+# SSL certificates & private keys
+*.pem
+*.key
+*.crt
+
+# Cert folders
+certs/
