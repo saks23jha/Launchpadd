@@ -5,6 +5,8 @@ logs/
 # Environment files
 .env
 .env.prod
+.env.local
+.env.dev
 # Node
 node_modules/
 # Certificates / Keys
