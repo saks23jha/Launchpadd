@@ -1,0 +1,18 @@
+#large model files
+*.safetensors
+*.bin
+*.gguf
+*.pth
+*.pt
+*.ckpt
+#notebook checkpoints
+.ipynb_checkpoints/
+#logs
+logs/
+# python chache
+__pycache__/
+*.pyc
+#env files
+.venv
+venv/
+env/
