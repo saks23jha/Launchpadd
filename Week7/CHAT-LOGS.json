@@ -1,15 +1,5 @@
 [
   {
-    "time": "2026-02-08T13:35:19.564995",
-    "role": "assistant",
-    "content": "{'columns': ['SUM(revenue)'], 'rows': [(218.7,)]}"
-  },
-  {
-    "time": "2026-02-08T13:35:20.542952",
-    "role": "user",
-    "content": "what was the total revenue in 2023"
-  },
-  {
     "time": "2026-02-08T13:35:20.704995",
     "role": "assistant",
     "content": "{'columns': ['SUM(revenue)'], 'rows': [(218.7,)]}"
@@ -23,5 +13,15 @@
     "time": "2026-02-09T13:44:28.964659",
     "role": "assistant",
     "content": "Answer generated for: what is rag"
+  },
+  {
+    "time": "2026-02-16T07:51:31.171212",
+    "role": "user",
+    "content": "revenue growth"
+  },
+  {
+    "time": "2026-02-16T07:51:31.171922",
+    "role": "assistant",
+    "content": "Answer generated for: revenue growth"
   }
 ]
