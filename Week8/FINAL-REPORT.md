@@ -4,11 +4,13 @@
 ## Overview
 This report summarises the complete Week 8 journey of building, fine-tuning, quantising and deploying a local LLM API using TinyLlama.
 
-## Day 1 — Environment Setup
-- Set up Google Colab with T4 GPU
-- Installed all required libraries — transformers, peft, bitsandbytes, accelerate
-- Loaded TinyLlama/TinyLlama-1.1B-Chat-v1.0 base model
-- Verified GPU availability and model loading
+## Day 1 — Dataset Analysis (Healthcare Domain)
+- Domain: Healthcare / Medical Question Answering
+- Dataset sourced from Hugging Face Datasets
+- Randomly shuffled and sampled 1200 examples for diversity
+- Stored raw dataset at data/raw/healthcare_raw.jsonl in JSONL format
+- Each record follows instruction-based schema with instruction, input, and output fields
+- Data cleaned and train-validation splits prepared for fine-tuning
 
 ## Day 2 — QLoRA Fine-tuning
 - Dataset: ChatDoctor-HealthCareMagic-100k (500 examples)
