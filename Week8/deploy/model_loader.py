@@ -1,5 +1,5 @@
 from llama_cpp import Llama
-import config
+from deploy import config
 
 # Global model variable (caching)
 model = None

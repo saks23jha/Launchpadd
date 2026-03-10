@@ -4,8 +4,8 @@ from typing import Optional, List
 import uuid
 import logging
 import os
-from model_loader import load_model
-import config
+from deploy.model_loader import load_model
+from deploy import config
 
 # Setup logging
 os.makedirs("logs", exist_ok=True)
@@ -18,8 +18,7 @@ app = FastAPI()
 model = load_model()
 
 # Medical keywords
-MEDICAL_KEYWORDS = ["pain", "cold","fever", "doctor", "medicine", "symptoms", "disease", "treatment", "hospital", "health", "blood", "heart", "diabetes", "infection", "headache", "stomach", "cancer", "surgery", "prescription", "diagnosis", "injury"]
-
+MEDICAL_KEYWORDS = ["pain","cure","cataract","", "fitness","cold","fever", "doctor", "medicine", "symptoms", "disease", "treatment","tuberculosis", "hospital", "health", "name of medicine","blood", "heart", "diabetes", "infection", "headache", "stomach", "cancer", "surgery", "prescription", "diagnosis", "injury", "allergy", "virus", "bacteria", "vaccine", "therapy", "rehabilitation", "emergency","diet plan", "nurse", "pharmacy", "clinic", "mental health", "wellness","chronic", "acute","sinus","allergy","migraine","asthma","arthritis","depression","anxiety","insomnia","obesity","hypertension","stroke","dementia","alzheimer","multiple sclerosis","epilepsy","autism","ADHD","covid","coronavirus","pandemic","flu","influenza","ebola","zika","sars","mers","hiv","aids","malaria","dengue","cholera","typhoid","hepatitis","measles","mumps","rubella", "diet", "exercise", "fitness", "nutrition", "weight loss", "muscle gain", "cardio", "strength training", "yoga", "meditation"]
 # ── Request Models ──
 class GenerateRequest(BaseModel):
     prompt: str
