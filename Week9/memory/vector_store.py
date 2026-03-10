@@ -56,3 +56,25 @@ class VectorStore:
                 results.append(self.texts[idx])
 
         return results
+        # -------------------------
+    # Save Index to Disk
+    # -------------------------
+    def _save(self):
+        faiss.write_index(self.index, FAISS_INDEX_PATH)
+
+        with open(FAISS_TEXTS_PATH, "w", encoding="utf-8") as f:
+            for text in self.texts:
+                f.write(text.replace("\n", " ") + "\n")
+
+        print(f"[VECTOR STORE] Saved {len(self.texts)} entries to disk.")
+
+    # -------------------------
+    # Load Index from Disk
+    # -------------------------
+    def _load(self):
+        self.index = faiss.read_index(FAISS_INDEX_PATH)
+
+        with open(FAISS_TEXTS_PATH, "r", encoding="utf-8") as f:
+            self.texts = [line.strip() for line in f.readlines() if line.strip()]
+
+        print(f"[VECTOR STORE] Loaded {len(self.texts)} entries from disk.")

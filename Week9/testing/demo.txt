@@ -1,3 +1,0 @@
-
-Hello from Day 3 FileAgent testing.
-This file is used to verify text file reading functionality.

@@ -1,8 +1,9 @@
 import os
+from dotenv import load_dotenv
 from autogen_agentchat.agents import AssistantAgent
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 
-
+load_dotenv() 
 def create_research_agent():
     system_prompt = """
     You are a Research Agent.
