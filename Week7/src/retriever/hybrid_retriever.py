@@ -85,10 +85,7 @@ def hybrid_retrieve(query, top_k=5, filters=None):
 if __name__ == "__main__":
     query = input("Enter query: ").strip()
 
-    filters = {
-        "year": "2024",
-        "type": "policy"
-    }
+    filters = None
 
     print("\nDeduplicated Hybrid Results:\n")
     for r in hybrid_retrieve(query, top_k=5, filters=filters):

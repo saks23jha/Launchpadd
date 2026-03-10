@@ -23,7 +23,7 @@ def run_indexing():
     vectors = np.array(vectors, dtype="float32")
 
     dim = vectors.shape[1]
-    index = faiss.IndexFlatL2(dim)
+    index = faiss.IndexFlatIP(dim)
     index.add(vectors)
 
     INDEX_DIR.mkdir(parents=True, exist_ok=True)
