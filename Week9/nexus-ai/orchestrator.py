@@ -1,9 +1,15 @@
 import sys
+import re
+import os
 import logging
 import asyncio
 sys.path.append("..")
 
-from config import LOG_FILE, LOG_DIR, SALES_CSV_PATH
+from autogen_agentchat.agents import AssistantAgent
+from autogen_agentchat.messages import TextMessage
+from autogen_ext.models.openai import OpenAIChatCompletionClient
+
+from config import LOG_FILE, LOG_DIR, SALES_CSV_PATH, MODEL_NAME, API_KEY, BASE_URL, MODEL_INFO
 from agents.planner import run_planner
 from agents.researcher import run_researcher
 from agents.coder import run_coder
@@ -17,12 +23,8 @@ from memory.session_memory import SessionMemory
 from memory.vector_store import VectorStore
 from memory.long_term_memory import LongTermMemory
 
-import os
 os.makedirs(LOG_DIR, exist_ok=True)
 
-# -------------------------
-# Logger Setup
-# -------------------------
 logging.basicConfig(
     filename=LOG_FILE,
     level=logging.INFO,
@@ -38,7 +40,6 @@ class NexusOrchestrator:
         self.session_memory = SessionMemory()
         self.vector_store = VectorStore()
         self.long_term_memory = LongTermMemory()
-        self.max_retries = 2
         logger.info("NEXUS AI Orchestrator initialized.")
 
     # -------------------------
@@ -78,31 +79,257 @@ class NexusOrchestrator:
                 category="nexus"
             )
             logger.info("Memory updated successfully.")
-
         except Exception as e:
             logger.warning(f"Memory update failed: {e}")
 
     # -------------------------
-    # Check if Coder Needed
+    # LLM decides if Coder needed
     # -------------------------
-    def needs_coder(self, query: str) -> bool:
+    async def needs_coder(self, query: str) -> bool:
+        system_prompt = """
+        You are a binary decision agent.
+        Reply with ONLY the single word: yes or no
+        No explanation. No punctuation. No markdown. Just one word.
+
+        Think carefully about the user's intent:
+
+        Reply yes if the user wants to:
+        - Write, generate, create, or implement any code
+        - Build or design any technical system, pipeline, or architecture
+        - Perform data analysis or calculations
+        - Execute or run any algorithm
+
+        Reply no if the user wants to:
+        - Plan a business or startup
+        - Get an explanation or research on a topic
+        - Understand concepts or theories
+        - Get general advice or recommendations
         """
-        Only trigger coder for data analysis tasks,
-        not for architecture or planning queries.
+
+        model_client = OpenAIChatCompletionClient(
+            model=MODEL_NAME,
+            api_key=API_KEY,
+            base_url=BASE_URL,
+            temperature=0.0,
+            model_info=MODEL_INFO,
+        )
+
+        router = AssistantAgent(
+            name="code_router",
+            system_message=system_prompt,
+            model_client=model_client,
+        )
+
+        try:
+            response = await router.on_messages(
+                [TextMessage(content=query, source="orchestrator")],
+                cancellation_token=None,
+            )
+
+            decision = response.chat_message.content.strip().lower().split()[0]
+            decision = decision.replace("*", "").replace(".", "").replace(",", "")
+            print(f"[CODE ROUTER] Decision: {decision}")
+            return decision == "yes"
+
+        except Exception as e:
+            logger.warning(f"Code router failed: {e}")
+            return False
+
+    # -------------------------
+    # LLM decides if CSV needed
+    # -------------------------
+    async def needs_csv(self, query: str) -> bool:
+        system_prompt = """
+        You are a binary decision agent.
+        Reply with ONLY the single word: yes or no
+        No explanation. No punctuation. No markdown. Just one word.
+
+        Think carefully:
+
+        Reply yes ONLY if the user specifically wants to:
+        - Analyze existing sales, revenue, or product data
+        - Process or query a CSV or database
+
+        Reply no if the user wants to:
+        - Write general code or algorithms
+        - Build pipelines or architecture
+        - Do math or general programming tasks
         """
-        code_keywords = [
-            "analyze csv",
-            "analyse csv",
-            "run code",
-            "execute code",
-            "calculate",
-            "compute",
-            "csv analysis",
-            "data analysis",
-            "write code",
-        ]
-        query_lower = query.lower()
-        return any(keyword in query_lower for keyword in code_keywords)
+
+        model_client = OpenAIChatCompletionClient(
+            model=MODEL_NAME,
+            api_key=API_KEY,
+            base_url=BASE_URL,
+            temperature=0.0,
+            model_info=MODEL_INFO,
+        )
+
+        router = AssistantAgent(
+            name="csv_router",
+            system_message=system_prompt,
+            model_client=model_client,
+        )
+
+        try:
+            response = await router.on_messages(
+                [TextMessage(content=query, source="orchestrator")],
+                cancellation_token=None,
+            )
+
+            decision = response.chat_message.content.strip().lower().split()[0]
+            decision = decision.replace("*", "").replace(".", "").replace(",", "")
+            print(f"[CSV ROUTER] Decision: {decision}")
+            return decision == "yes"
+
+        except Exception as e:
+            logger.warning(f"CSV router failed: {e}")
+            return False
+
+    # -------------------------
+    # LLM decides if pipeline
+    # -------------------------
+    async def is_pipeline_query(self, query: str) -> bool:
+        system_prompt = """
+        You are a binary decision agent.
+        Reply with ONLY the single word: yes or no
+        No explanation. No punctuation. No markdown. Just one word.
+
+        Reply yes if the user wants to:
+        - Design, create, or build any kind of pipeline
+        - Examples: RAG pipeline, ETL pipeline, data pipeline,
+          NLP pipeline, training pipeline, chunking pipeline
+
+        Reply no for everything else.
+        """
+
+        model_client = OpenAIChatCompletionClient(
+            model=MODEL_NAME,
+            api_key=API_KEY,
+            base_url=BASE_URL,
+            temperature=0.0,
+            model_info=MODEL_INFO,
+        )
+
+        router = AssistantAgent(
+            name="pipeline_router",
+            system_message=system_prompt,
+            model_client=model_client,
+        )
+
+        try:
+            response = await router.on_messages(
+                [TextMessage(content=query, source="orchestrator")],
+                cancellation_token=None,
+            )
+
+            decision = response.chat_message.content.strip().lower().split()[0]
+            decision = decision.replace("*", "").replace(".", "").replace(",", "")
+            print(f"[PIPELINE ROUTER] Decision: {decision}")
+            return decision == "yes"
+
+        except Exception as e:
+            logger.warning(f"Pipeline router failed: {e}")
+            return False
+
+    # -------------------------
+    # LLM generates filename
+    # -------------------------
+    async def get_pipeline_filename(self, query: str) -> str:
+        system_prompt = """
+        You are a filename generator agent.
+        Given a user query about a pipeline, generate a clean Python filename.
+
+        Rules:
+        - Use snake_case
+        - End with _pipeline
+        - No spaces, no special characters, no extension
+        - Maximum 30 characters
+        - Examples:
+          "design a RAG pipeline" → rag_pipeline
+          "create chunking pipeline" → chunking_pipeline
+          "build ETL pipeline for sales" → etl_pipeline
+          "NLP text classification pipeline" → nlp_pipeline
+
+        Reply with ONLY the filename, nothing else.
+        """
+
+        model_client = OpenAIChatCompletionClient(
+            model=MODEL_NAME,
+            api_key=API_KEY,
+            base_url=BASE_URL,
+            temperature=0.0,
+            model_info=MODEL_INFO,
+        )
+
+        agent = AssistantAgent(
+            name="filename_agent",
+            system_message=system_prompt,
+            model_client=model_client,
+        )
+
+        try:
+            response = await agent.on_messages(
+                [TextMessage(content=query, source="orchestrator")],
+                cancellation_token=None,
+            )
+
+            filename = response.chat_message.content.strip().lower()
+            filename = re.sub(r'[^a-z0-9_]', '', filename)[:30]
+            print(f"[FILENAME AGENT] Pipeline filename: {filename}")
+            return filename or "pipeline"
+
+        except Exception as e:
+            logger.warning(f"Filename agent failed: {e}")
+            return "pipeline"
+
+    # -------------------------
+    # Generate MD Filename from query
+    # -------------------------
+    def get_md_filename(self, query: str) -> str:
+        clean = query.lower().strip()
+        clean = re.sub(r'[^a-z0-9\s]', '', clean)
+        clean = clean.strip().replace(" ", "_")[:40]
+        return f"{clean}.md"
+
+    # -------------------------
+    # Save Pipeline Files
+    # -------------------------
+    def save_pipeline_files(self, filename_base: str, code: str, md_report: str):
+        py_path = os.path.join(os.getcwd(), f"{filename_base}.py")
+        md_path = os.path.join(os.getcwd(), f"{filename_base}.md")
+
+        try:
+            with open(py_path, "w", encoding="utf-8") as f:
+                f.write(code)
+            print(f"\n[NEXUS] Pipeline code saved to {py_path} ✅")
+            logger.info(f"Pipeline code saved to {py_path}")
+        except Exception as e:
+            print(f"\n[NEXUS] Failed to save .py file: {e}")
+            logger.error(f"Pipeline .py save failed: {e}")
+
+        try:
+            with open(md_path, "w", encoding="utf-8") as f:
+                f.write(md_report)
+            print(f"[NEXUS] Pipeline explanation saved to {md_path} ✅")
+            logger.info(f"Pipeline explanation saved to {md_path}")
+        except Exception as e:
+            print(f"\n[NEXUS] Failed to save .md file: {e}")
+            logger.error(f"Pipeline .md save failed: {e}")
+
+    # -------------------------
+    # Save MD Report
+    # -------------------------
+    def save_md_report(self, query: str, report: str):
+        filename = self.get_md_filename(query)
+        filepath = os.path.join(os.getcwd(), filename)
+        try:
+            with open(filepath, "w", encoding="utf-8") as f:
+                f.write(report)
+            print(f"\n[NEXUS] Report saved to {filepath} ✅")
+            logger.info(f"MD report saved to {filepath}")
+        except Exception as e:
+            print(f"\n[NEXUS] Failed to save .md report: {e}")
+            logger.error(f"MD report save failed: {e}")
 
     # -------------------------
     # Full Pipeline
@@ -113,11 +340,23 @@ class NexusOrchestrator:
         print(f"NEXUS AI Processing: {user_query}")
         print(f"{'='*50}")
 
-        # Fetch memory context
+        # All routing decisions made by LLM
+        is_pipeline = await self.is_pipeline_query(user_query)
+        pipeline_filename = ""
+        if is_pipeline:
+            pipeline_filename = await self.get_pipeline_filename(user_query)
+            print(f"\n[NEXUS] Pipeline detected! Will save as {pipeline_filename}.py and {pipeline_filename}.md")
+
+        # Fetch memory context — background only
         memory_context = self.get_memory_context(user_query)
         enriched_query = user_query
         if memory_context:
-            enriched_query = f"{user_query}\n\nContext from memory:\n{memory_context}"
+            enriched_query = f"""
+Current query: {user_query}
+
+For background context only (do NOT apply previous query details to current query):
+{memory_context}
+"""
 
         # -------------------------
         # Step 1: Planner
@@ -143,29 +382,41 @@ class NexusOrchestrator:
             logger.info("Research completed.")
         except Exception as e:
             logger.error(f"Researcher failed: {e}")
-            combined_research = enriched_query
+            combined_research = user_query
 
         # -------------------------
-        # Step 3: Coder (only for data tasks)
+        # Step 3: Coder (LLM decides)
         # -------------------------
         code_output = ""
-        if self.needs_coder(user_query):
+        generated_code = ""
+        coder_needed = await self.needs_coder(user_query)
+
+        if coder_needed:
             try:
                 print("\n[NEXUS] Step 3: Running Coder...")
                 logger.info("Step 3: Coder started.")
 
                 data = None
-                try:
-                    from tools.file_tool import read_csv
-                    data = read_csv(SALES_CSV_PATH)
-                except Exception:
-                    pass
+                if not is_pipeline:
+                    csv_needed = await self.needs_csv(user_query)
+                    if csv_needed:
+                        try:
+                            from tools.file_tool import read_csv
+                            data = read_csv(SALES_CSV_PATH)
+                            print("[NEXUS] CSV data loaded for analysis.")
+                        except Exception:
+                            pass
+                    else:
+                        print("[NEXUS] No CSV needed for this task.")
 
                 coder_result = await run_coder(
                     task=user_query,
                     context=combined_research[:500],
                     data=data,
                 )
+
+                generated_code = coder_result["code"]
+
                 if coder_result["success"]:
                     code_output = coder_result["output"]
                     logger.info("Coder completed successfully.")
@@ -237,11 +488,46 @@ class NexusOrchestrator:
         try:
             print("\n[NEXUS] Step 8: Generating final report...")
             logger.info("Step 8: Reporter started.")
-            final_report = await run_reporter(user_query, validated_output)
+
+            enriched_output = validated_output
+            if code_output:
+                enriched_output = f"""
+Generated Code:
+{generated_code}
+
+Execution Output:
+{code_output}
+
+Additional Context:
+{validated_output[:1000]}
+"""
+
+            final_report = await run_reporter(
+                user_query,
+                enriched_output,
+                is_pipeline=is_pipeline,
+            )
             logger.info("Report generated successfully.")
+
         except Exception as e:
             logger.error(f"Reporter failed: {e}")
             final_report = validated_output
+
+        # -------------------------
+        # Save Pipeline Files (.py + .md)
+        # -------------------------
+        if is_pipeline and generated_code:
+            self.save_pipeline_files(
+                filename_base=pipeline_filename,
+                code=generated_code,
+                md_report=final_report,
+            )
+
+        # -------------------------
+        # Auto save every query as .md
+        # -------------------------
+        else:
+            self.save_md_report(user_query, final_report)
 
         # Update Memory
         await self.update_memory(user_query, final_report)

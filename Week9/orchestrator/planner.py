@@ -53,31 +53,41 @@ class Planner:
         return tasks
 
     # -----------------------------
-    # Step 2: Execute Tasks
+    # Step 2: Execute Tasks (PARALLEL)
     # -----------------------------
     async def execute_tasks(self, tasks: List[Dict]) -> List[str]:
         """
-        Dispatch tasks to worker agents.
-        Designed to support parallel execution.
+        Dispatch tasks to worker agents in parallel.
         """
 
-        results = []
+        print("\n[PLANNER] Dispatching Tasks to Workers (Parallel Execution)")
+
+        worker_jobs = []
 
         for task in tasks:
             worker = create_worker_agent()
 
-            print(f"\n[PLANNER] Dispatching Task {task['task_id']} to Worker")
+            print(f"[PLANNER] Assigning Task {task['task_id']}")
 
-            response = await worker.on_messages(
+            job = worker.on_messages(
                 [TextMessage(content=task["description"], source="planner")],
                 cancellation_token=None,
             )
 
-            output = response.chat_message.content
-            results.append(output)
+            worker_jobs.append(job)
 
-            print(f"[WORKER OUTPUT - Task {task['task_id']}]:")
+        # Run all workers simultaneously
+        responses = await asyncio.gather(*worker_jobs)
+
+        results = []
+
+        for i, response in enumerate(responses):
+            output = response.chat_message.content
+
+            print(f"\n[WORKER OUTPUT - Task {tasks[i]['task_id']}]:")
             print(output)
+
+            results.append(output)
 
         return results
 
