@@ -1,27 +1,27 @@
 [
   {
-    "time": "2026-03-10T07:07:33.439565",
+    "time": "2026-03-10T07:09:06.710371",
+    "role": "assistant",
+    "content": "{'columns': ['revenue'], 'rows': [(120.5,)]}"
+  },
+  {
+    "time": "2026-03-11T11:55:02.278973",
+    "role": "user",
+    "content": "total revenue for 2022"
+  },
+  {
+    "time": "2026-03-11T11:55:02.607074",
     "role": "assistant",
     "content": "{'columns': ['SUM(revenue)'], 'rows': [(186.5,)]}"
   },
   {
-    "time": "2026-03-10T07:08:47.710585",
+    "time": "2026-03-11T11:55:22.243736",
     "role": "user",
-    "content": "total revenue in 2023"
+    "content": "total revenue for year 2022"
   },
   {
-    "time": "2026-03-10T07:08:47.892894",
+    "time": "2026-03-11T11:55:22.401367",
     "role": "assistant",
-    "content": "{'columns': ['SUM(revenue)'], 'rows': [(218.7,)]}"
-  },
-  {
-    "time": "2026-03-10T07:09:06.406934",
-    "role": "user",
-    "content": "revenue in 2023 for Drug A"
-  },
-  {
-    "time": "2026-03-10T07:09:06.710371",
-    "role": "assistant",
-    "content": "{'columns': ['revenue'], 'rows': [(120.5,)]}"
+    "content": "{'columns': ['SUM(revenue)'], 'rows': [(186.5,)]}"
   }
 ]
