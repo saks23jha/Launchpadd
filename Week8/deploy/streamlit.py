@@ -2,8 +2,22 @@ import streamlit as st
 import requests
 import config
 
-# Page config
+# Page configuration
 st.set_page_config(page_title="Medical Assistant", page_icon="🏥")
+
+# Hide Streamlit menu/footer for cleaner UI
+st.markdown(
+    """
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Title
 st.title("🏥 Medical Assistant Chatbot")
 st.caption("Powered by TinyLlama ChatDoctor — Week 8 Capstone")
 
@@ -11,45 +25,44 @@ st.caption("Powered by TinyLlama ChatDoctor — Week 8 Capstone")
 if "history" not in st.session_state:
     st.session_state.history = []
 
-# Sidebar settings
-st.sidebar.title("⚙️ Settings")
-temperature = st.sidebar.slider("Temperature", 0.1, 1.0, config.TEMPERATURE)
-max_tokens = st.sidebar.slider("Max Tokens", 50, 500, config.MAX_TOKENS)
-top_k = st.sidebar.slider("Top-K", 1, 100, config.TOP_K)
-top_p = st.sidebar.slider("Top-P", 0.1, 1.0, config.TOP_P)
-
 # Display chat history
 for turn in st.session_state.history:
     with st.chat_message("user"):
         st.write(turn["user"])
     with st.chat_message("assistant"):
-        st.write(turn["assistant"])
+        st.markdown(turn["assistant"])
 
 # Chat input
 user_input = st.chat_input("Ask a medical question...")
 
 if user_input:
+
     # Show user message
     with st.chat_message("user"):
         st.write(user_input)
 
-    # Call /chat API
+    # Call FastAPI /chat endpoint
     with st.spinner("Thinking..."):
-        response = requests.post(
-            f"http://{config.HOST}:{config.PORT}/chat",
-            json={
-                "message": user_input,
-                "history": st.session_state.history,
-                "temperature": temperature,
-                "max_tokens": max_tokens,
-                "top_k": top_k,
-                "top_p": top_p
-            }
-        )
-        data = response.json()
-        assistant_response = data["response"]
-        st.session_state.history = data["history"]
+        try:
+            response = requests.post(
+                f"http://{config.HOST}:{config.PORT}/chat",
+                json={
+                    "message": user_input,
+                    "history": st.session_state.history,
+                    "temperature": config.TEMPERATURE,
+                    "max_tokens": config.MAX_TOKENS,
+                    "top_k": config.TOP_K,
+                    "top_p": config.TOP_P
+                }
+            )
 
-    # Show assistant response
+            data = response.json()
+            assistant_response = data["response"]
+            st.session_state.history = data["history"]
+
+        except Exception as e:
+            assistant_response = f"Error contacting API: {e}"
+
+    # Display assistant response
     with st.chat_message("assistant"):
-        st.write(assistant_response)
+        st.markdown(assistant_response)
